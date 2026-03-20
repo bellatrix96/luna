@@ -2156,33 +2156,47 @@ function handleOAuthCallback() {
 }
 
 function showGCalStatus(msg, type) {
+  const color = type === 'error' ? '#C44040' : type === 'success' ? '#2A8A2A' : '#8B7EC4';
   document.querySelectorAll('.gcal-status').forEach(el => {
     el.textContent = msg;
-    el.style.color = type === 'error' ? '#C44040' : type === 'success' ? '#2A8A2A' : 'var(--text3)';
+    el.style.color = color;
+    el.style.display = 'block';
+    el.style.marginTop = '8px';
+    el.style.fontSize = '12px';
   });
+  // Also show inside the events panel if visible
+  const panel = document.getElementById('gcal-events');
+  if (panel && panel.style.display !== 'none' && type !== 'success') {
+    panel.innerHTML = `<div style="font-size:12px;color:${color};padding:8px 0">${msg}</div>`;
+  }
+  console.log('GCal status:', msg);
 }
 
 // Step 1: fetch the list of all calendars in the account
 async function loadAllCalendars() {
   const token = gcalAccessToken || config.gcalToken;
-  if (!token) return;
+  if (!token) { showGCalStatus('No token — please reconnect', 'error'); return; }
   gcalAccessToken = token;
+  showGCalStatus('Loading your calendars...', 'info');
 
   try {
-    const res = await fetch(`${GCAL_API_BASE}/users/me/calendarList`, {
-      headers: { Authorization: `Bearer ${token}` }
+    const res = await fetch(`${GCAL_API_BASE}/users/me/calendarList?maxResults=50`, {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' }
     });
+    const data = await res.json();
     if (!res.ok) {
-      if (res.status === 401) { gcalAccessToken = null; config.gcalToken = null; saveData(); showGCalStatus('Session expired — reconnect Calendar', 'error'); }
+      const msg = data?.error?.message || `Error ${res.status}`;
+      showGCalStatus(`Calendar error: ${msg}`, 'error');
+      if (res.status === 401) { gcalAccessToken = null; config.gcalToken = null; saveData(); }
       return;
     }
-    const data = await res.json();
     const calendars = (data.items || []).filter(c => c.accessRole !== 'freeBusyReader');
-    showGCalStatus(`Found ${calendars.length} calendar${calendars.length !== 1 ? 's' : ''} — loading events...`, 'success');
+    if (!calendars.length) { showGCalStatus('No calendars found in your account', 'error'); return; }
+    showGCalStatus(`Found ${calendars.length} calendar(s) — loading events...`, 'success');
     await loadEventsFromAllCalendars(calendars, token);
   } catch(e) {
+    showGCalStatus(`Network error: ${e.message}`, 'error');
     console.warn('GCal calendarList error', e);
-    showGCalStatus('Could not load calendars', 'error');
   }
 }
 
