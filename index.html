@@ -1204,6 +1204,139 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 .pattern-insight-item:last-child { border-bottom: none; }
 .pattern-insight-item strong { color: var(--text); font-weight: 500; }
 
+/* ── MOON MODAL ── */
+.moon-modal {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  width: 560px;
+  max-width: 95vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  position: relative;
+  padding: 0 0 32px;
+}
+.moon-modal-close {
+  position: absolute;
+  top: 16px; right: 18px;
+  background: none; border: none;
+  color: var(--text3); font-size: 18px;
+  cursor: pointer; z-index: 10;
+}
+.moon-modal-icon {
+  font-size: 72px;
+  text-align: center;
+  padding: 36px 0 12px;
+  display: block;
+}
+.moon-modal-name {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 300;
+  text-align: center;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.moon-modal-tagline {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-style: italic;
+  text-align: center;
+  color: var(--phase-color);
+  margin-bottom: 6px;
+}
+.moon-modal-duration {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.moon-modal-body {
+  padding: 0 32px;
+}
+.moon-section {
+  margin-bottom: 20px;
+}
+.moon-section-title {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 7px;
+  font-weight: 500;
+}
+.moon-section-text {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.75;
+}
+.moon-list {
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.moon-list li {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+.moon-cycle-sync {
+  background: var(--phase-soft);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  border-left: 3px solid var(--phase-color);
+}
+.moon-cycle-sync .moon-section-title { color: var(--phase-color); }
+.moon-affirmation {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-style: italic;
+  color: var(--text);
+  text-align: center;
+  padding: 20px 16px 8px;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+  line-height: 1.5;
+}
+.moon-next {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 8px;
+}
+.sidebar-moon {
+  cursor: pointer;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+.sidebar-moon:hover { transform: scale(1.2); }
+/* Moon widget on today landing */
+.moon-landing-widget {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.moon-landing-widget:hover {
+  border-color: var(--phase-color);
+  background: var(--phase-soft);
+}
+.moon-landing-icon { font-size: 28px; }
+.moon-landing-info {}
+.moon-landing-name { font-size: 13px; font-weight: 500; color: var(--text); }
+.moon-landing-tagline { font-size: 11px; color: var(--text2); margin-top: 1px; }
+
 </style>
 </head>
 <body class="theme-rising">
@@ -1750,6 +1883,46 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   </div>
 </div>
 
+
+<!-- MOON PHASE MODAL -->
+<div id="moon-overlay" class="overlay-bg" style="display:none" onclick="if(event.target===this)closeMoonModal()">
+  <div class="moon-modal">
+    <button class="moon-modal-close" onclick="closeMoonModal()">✕</button>
+    <div class="moon-modal-icon" id="mm-icon">🌕</div>
+    <div class="moon-modal-name" id="mm-name">Full Moon</div>
+    <div class="moon-modal-tagline" id="mm-tagline"></div>
+    <div class="moon-modal-duration" id="mm-duration"></div>
+    <div class="moon-modal-body">
+      <div class="moon-section">
+        <div class="moon-section-title">Significance</div>
+        <div class="moon-section-text" id="mm-significance"></div>
+      </div>
+      <div class="moon-section">
+        <div class="moon-section-title">Energy right now</div>
+        <div class="moon-section-text" id="mm-energy"></div>
+      </div>
+      <div class="moon-section">
+        <div class="moon-section-title">How it might feel</div>
+        <div class="moon-section-text" id="mm-feels"></div>
+      </div>
+      <div class="moon-section">
+        <div class="moon-section-title">What to do</div>
+        <ul class="moon-list" id="mm-todo"></ul>
+      </div>
+      <div class="moon-section">
+        <div class="moon-section-title">What to avoid</div>
+        <div class="moon-section-text" id="mm-avoid"></div>
+      </div>
+      <div class="moon-section moon-cycle-sync">
+        <div class="moon-section-title">Cycle sync</div>
+        <div class="moon-section-text" id="mm-cycle"></div>
+      </div>
+      <div class="moon-affirmation" id="mm-affirmation"></div>
+      <div class="moon-next" id="mm-next"></div>
+    </div>
+  </div>
+</div>
+
 <!-- SONG PLAYER OVERLAY -->
 <div id="yt-player-overlay" class="overlay-bg" style="display:none">
   <div class="yt-player-modal">
@@ -1825,21 +1998,127 @@ function getPhaseName(phase) {
   return config.phaseNames[phase] || phase;
 }
 
+const MOON_DATA = {
+  new_moon: {
+    icon: '🌑', name: 'New Moon', phase: 'new_moon',
+    tagline: 'The dark holds infinite possibility.',
+    significance: 'The New Moon is the beginning of the lunar cycle — a reset point. In many cultures it marks the most powerful time for intention-setting, new beginnings, and inner work. The sky is dark, which means your inner world is louder.',
+    energy: 'Introspective, quiet, seed-planting energy. You may feel more withdrawn than usual — this is not a flaw, it is biology and lunar pull working in tandem.',
+    howItFeels: 'Low external energy, high internal clarity. You may feel reflective, sensitive, or like you want to start fresh. Creative ideas often surface now even if the drive to act on them hasn't arrived yet.',
+    whatToDo: ['Set one clear intention for this lunar cycle — write it down', 'Journal: what are you starting? What do you want to call in?', 'Rest more than usual — this is a regenerative phase', 'Plant metaphorical seeds: start a new habit, begin the GMAT chapter, initiate the conversation you've been delaying', 'Avoid draining social obligations — protect your energy'],
+    avoid: 'Overcommitting, forcing big launches or decisions, or expecting high external energy from yourself.',
+    cycleSync: 'If your period also starts around the New Moon, you are on a White Moon cycle — historically associated with the archetypal mother/nurturer energy. If your period starts at Full Moon, you are on a Red Moon cycle — associated with the wild, creative, magnetic woman.',
+    affirmation: 'I am beginning. What I plant now will bloom.',
+    nextPhase: 'Waxing Crescent begins in ~1.85 days',
+    durationDays: '1–2 days',
+  },
+  waxing_crescent: {
+    icon: '🌒', name: 'Waxing Crescent', phase: 'waxing_crescent',
+    tagline: 'The light is returning. So is your power.',
+    significance: 'The Waxing Crescent is the first sliver of light after the New Moon. Energy is tentative but building — like the first green shoot pushing through soil. This is the phase of hope, momentum, and early action.',
+    energy: 'Slowly rising. You're moving from inward to outward energy. Motivation begins to stir. A good time to start acting on the intentions you set at the New Moon.',
+    howItFeels: 'Like the beginning of a good mood you can't fully explain yet. Slightly more social, slightly more optimistic. Creative energy starts waking up.',
+    whatToDo: ['Begin acting on your New Moon intention — first small steps', 'Start new projects, habits, or study plans', 'Reach out to people you've been meaning to connect with', 'Build momentum in GMAT study — start with familiar material to warm up', 'Make wish lists, vision boards, or future plans'],
+    avoid: 'Giving up too soon — this phase rewards persistence even when energy is still low.',
+    cycleSync: 'Often aligns with the follicular phase — both are about building, growing, and forward momentum. Your estrogen and the moon are both rising.',
+    affirmation: 'I am building. Every small step is real progress.',
+    nextPhase: 'First Quarter in ~3–4 days',
+    durationDays: '~7 days',
+  },
+  first_quarter: {
+    icon: '🌓', name: 'First Quarter', phase: 'first_quarter',
+    tagline: 'Half lit. Fully committed.',
+    significance: 'The First Quarter Moon is a decision point — the moon is exactly half lit, representing the tension between where you were and where you're going. Challenges often surface now, and how you respond defines the cycle.',
+    energy: 'Action-oriented, decisive, sometimes tense. This is the moon of doing — not planning, not reflecting. Executing.',
+    howItFeels: 'You may feel restless, driven, or slightly agitated. There's an urgency to get things done. Obstacles feel more frustrating but also more solvable than usual.',
+    whatToDo: ['Push through resistance — this phase rewards action over perfection', 'Make decisions you've been sitting on', 'Do your hardest GMAT practice sections', 'Have the difficult conversation', 'Tackle the task you've been avoiding'],
+    avoid: 'Overthinking and stalling — this moon does not reward hesitation.',
+    cycleSync: 'Can align with ovulation or late follicular — when you're already feeling decisive and energised, the First Quarter amplifies that drive significantly.',
+    affirmation: 'I act. I decide. I move.',
+    nextPhase: 'Waxing Gibbous in ~3–4 days',
+    durationDays: '~7 days',
+  },
+  waxing_gibbous: {
+    icon: '🌔', name: 'Waxing Gibbous', phase: 'waxing_gibbous',
+    tagline: 'Almost full. Refine everything.',
+    significance: 'The Waxing Gibbous is the phase of refinement — the moon is almost full, almost at peak power. This is not the time to start new things, it's the time to perfect what you've already begun.',
+    energy: 'High, focused, detail-oriented. You're in editing mode — reviewing, improving, tightening. Perfectionist energy is actually useful here.',
+    howItFeels: 'Productive but slightly intense. You may notice what's not working and feel compelled to fix it. Good. This is precisely the energy of this phase.',
+    whatToDo: ['Review and refine ongoing work — edit the essay, redo the practice test', 'Analyse your GMAT weak areas and address them systematically', 'Prepare for something upcoming — a presentation, meeting, or date', 'Organise your space, your calendar, your study plan', 'Do mock interviews or practice conversations'],
+    avoid: 'Starting entirely new projects — finish what you have first.',
+    cycleSync: 'If this aligns with your late follicular or ovulation phase, you are operating at an extraordinary level of focus and magnetism simultaneously.',
+    affirmation: 'I refine. I prepare. I am ready.',
+    nextPhase: 'Full Moon in ~3–4 days',
+    durationDays: '~7 days',
+  },
+  full_moon: {
+    icon: '🌕', name: 'Full Moon', phase: 'full_moon',
+    tagline: 'You are seen. You are lit. You are at full power.',
+    significance: 'The Full Moon is the peak of the lunar cycle — maximum light, maximum energy, maximum visibility. Emotions are amplified, intuition is sharpest, and everything hidden tends to surface. It is the most powerful and the most intense phase.',
+    energy: 'Peak magnetism, heightened emotions, amplified everything. What you've been building reaches its fullest expression. What you've been suppressing also surfaces.',
+    howItFeels: 'Electric and sometimes overwhelming. You may feel more emotional, more visible, more alive. Sleep can be disrupted. Feelings are louder. Insights arrive suddenly.',
+    whatToDo: ['Show up in high-visibility situations — present, pitch, lead, perform', 'Have the important conversation you've been building toward', 'Celebrate progress and acknowledge what you've created this cycle', 'Release what is no longer serving you — old habits, relationships, thoughts', 'Journal: what has come to completion? What are you releasing?'],
+    avoid: 'Suppressing emotions — they will find their way out anyway. Work with them, not against them.',
+    cycleSync: 'If your ovulation falls on the Full Moon, you are experiencing maximum biological and lunar magnetism simultaneously. You are literally impossible to ignore right now.',
+    affirmation: 'I am whole. I am seen. I release what no longer serves me.',
+    nextPhase: 'Waning Gibbous begins tomorrow',
+    durationDays: '1–2 days at peak',
+  },
+  waning_gibbous: {
+    icon: '🌖', name: 'Waning Gibbous', phase: 'waning_gibbous',
+    tagline: 'Share what you've learned. Give it back.',
+    significance: 'The Waning Gibbous — also called the Disseminating Moon — is the phase of sharing, teaching, and expressing. You've reached the peak; now the energy turns outward in a different way — communicating, distributing, giving back.',
+    energy: 'Communicative, generous, reflective. A natural urge to share insights, have deep conversations, and pass on what you've learned.',
+    howItFeels: 'Slightly softer than the Full Moon but still high-energy. More conversational. You may find yourself wanting to talk, write, teach, or explain things.',
+    whatToDo: ['Share your knowledge — teach, write, mentor, post', 'Have meaningful conversations rather than surface ones', 'Process and integrate Full Moon emotions through journaling or talking', 'Express gratitude — to yourself and to others', 'Review your progress toward your cycle intentions'],
+    avoid: 'Keeping everything inside — this phase calls for expression and release.',
+    cycleSync: 'Often aligns with early luteal — your progesterone is rising and the moon is waning. Both ask you to slow down and turn inward gently.',
+    affirmation: 'I share. I express. I contribute.',
+    nextPhase: 'Last Quarter in ~3–4 days',
+    durationDays: '~7 days',
+  },
+  last_quarter: {
+    icon: '🌗', name: 'Last Quarter', phase: 'last_quarter',
+    tagline: 'Let it go. All of it.',
+    significance: 'The Last Quarter is the release point of the lunar cycle. Just as the First Quarter demanded action, the Last Quarter demands surrender. What needs to be forgiven, released, or let go of?',
+    energy: 'Introspective, releasing, sometimes emotionally charged. Old patterns, frustrations, and unresolved things surface for clearing.',
+    howItFeels: 'You may feel moody, reflective, or ready to purge — your space, your relationships, your habits. There's a clearing quality to this energy.',
+    whatToDo: ['Declutter physically and mentally — clear your space, your inbox, your mind', 'Forgive — yourself especially', 'End what needs to end, close what needs closing', 'Rest more deliberately', 'Reflect: what didn't work this cycle? What will you do differently?'],
+    avoid: 'Starting new things — this is completion energy, not initiation energy.',
+    cycleSync: 'Tends to align with late luteal — both are asking you to release, rest, and prepare for the next beginning. Honor both.',
+    affirmation: 'I release. I forgive. I make space.',
+    nextPhase: 'Waning Crescent in ~3–4 days',
+    durationDays: '~7 days',
+  },
+  waning_crescent: {
+    icon: '🌘', name: 'Waning Crescent', phase: 'waning_crescent',
+    tagline: 'Surrender. The cycle is completing.',
+    significance: 'The Waning Crescent — also called the Balsamic Moon — is the final phase before the New Moon. The thinnest sliver of light remains. This is the most yin, most inward, most restorative phase of the entire cycle.',
+    energy: 'Deeply quiet, intuitive, surrendered. Not passive — receptive. There is wisdom available in stillness right now that cannot be accessed through action.',
+    howItFeels: 'Tired in a meaningful way. Like the end of a long journey where rest is not only deserved but necessary. Dreams may be more vivid. Intuition is strongest.',
+    whatToDo: ['Rest without guilt — this is the most important thing you can do', 'Meditate, dream, journal stream-of-consciousness', 'Avoid draining obligations if possible', 'Tie up loose ends from this lunar cycle', 'Prepare your intentions for the coming New Moon', 'Sleep more, screen time less'],
+    avoid: 'Forcing productivity — this phase will not support it and fighting it is exhausting.',
+    cycleSync: 'If this aligns with your menstrual phase, you are in the deepest rest point of both cycles simultaneously. This is sacred. Honor it completely.',
+    affirmation: 'I rest. I receive. I trust the cycle.',
+    nextPhase: 'New Moon in ~1–2 days',
+    durationDays: '~7 days',
+  },
+};
+
 function getMoonPhase() {
-  // Simplified moon phase calculation based on known new moon reference
   const knownNewMoon = new Date('2024-01-11');
   const today = new Date();
   const diff = (today - knownNewMoon) / 86400000;
   const phase = ((diff % 29.53) + 29.53) % 29.53;
-  if (phase < 1.85) return { icon: '🌑', name: 'New Moon', insight: 'New beginnings. Set your intentions.' };
-  if (phase < 5.53) return { icon: '🌒', name: 'Waxing Crescent', insight: 'Energy is building. Align with the rising tide.' };
-  if (phase < 9.22) return { icon: '🌓', name: 'First Quarter', insight: 'Take decisive action. Momentum is yours.' };
-  if (phase < 12.91) return { icon: '🌔', name: 'Waxing Gibbous', insight: 'Refine and prepare. Your peak approaches.' };
-  if (phase < 16.61) return { icon: '🌕', name: 'Full Moon', insight: 'Maximum power. Show up fully — you are seen.' };
-  if (phase < 20.30) return { icon: '🌖', name: 'Waning Gibbous', insight: 'Share your wisdom. Release what no longer serves.' };
-  if (phase < 23.99) return { icon: '🌗', name: 'Last Quarter', insight: 'Let go. Make space for what\'s next.' };
-  if (phase < 27.68) return { icon: '🌘', name: 'Waning Crescent', insight: 'Rest and restore. The cycle completes.' };
-  return { icon: '🌑', name: 'New Moon', insight: 'New beginnings. Set your intentions.' };
+  if (phase < 1.85) return MOON_DATA.new_moon;
+  if (phase < 5.53) return MOON_DATA.waxing_crescent;
+  if (phase < 9.22) return MOON_DATA.first_quarter;
+  if (phase < 12.91) return MOON_DATA.waxing_gibbous;
+  if (phase < 16.61) return MOON_DATA.full_moon;
+  if (phase < 20.30) return MOON_DATA.waning_gibbous;
+  if (phase < 23.99) return MOON_DATA.last_quarter;
+  if (phase < 27.68) return MOON_DATA.waning_crescent;
+  return MOON_DATA.new_moon;
 }
 
 function saveLog() {
@@ -2643,6 +2922,7 @@ function initApp() {
   updateDipPrediction(phase);
   updateYtKeyStatus();
   renderHistory();
+  addMoonWidget();
   if (config.gcalToken) loadGCalEvents();
   setInterval(() => { if (document.visibilityState === 'visible') loadGCalEvents(); }, 300000);
 }
@@ -3018,6 +3298,71 @@ document.addEventListener('click', e => {
   if (e.target.id === 'settings-overlay') closeSettings();
   if (e.target.id === 'yt-player-overlay') closeSongPlayer();
 });
+
+// ── MOON MODAL ────────────────────────────────────────────────────
+function openMoonModal() {
+  const moon = getMoonPhase();
+  document.getElementById('mm-icon').textContent = moon.icon;
+  document.getElementById('mm-name').textContent = moon.name;
+  document.getElementById('mm-tagline').textContent = moon.tagline || '';
+  document.getElementById('mm-duration').textContent = `Duration: ${moon.durationDays || '~7 days'}  ·  ${moon.nextPhase || ''}`;
+  document.getElementById('mm-significance').textContent = moon.significance || '';
+  document.getElementById('mm-energy').textContent = moon.energy || '';
+  document.getElementById('mm-feels').textContent = moon.howItFeels || '';
+  document.getElementById('mm-avoid').textContent = moon.avoid || '';
+  document.getElementById('mm-cycle').textContent = moon.cycleSync || '';
+  document.getElementById('mm-affirmation').textContent = `"${moon.affirmation || ''}"`;
+  document.getElementById('mm-next').textContent = moon.nextPhase || '';
+  const todoEl = document.getElementById('mm-todo');
+  todoEl.innerHTML = (moon.whatToDo || []).map(t => `<li>${t}</li>`).join('');
+  document.getElementById('moon-overlay').style.display = 'flex';
+}
+
+function closeMoonModal() {
+  document.getElementById('moon-overlay').style.display = 'none';
+}
+
+function addMoonWidget() {
+  const moon = getMoonPhase();
+  // Add to sidebar moon - make clickable
+  const sidebarMoon = document.getElementById('sidebar-moon');
+  if (sidebarMoon) {
+    sidebarMoon.textContent = moon.icon;
+    sidebarMoon.title = `${moon.name} — click for details`;
+    sidebarMoon.onclick = openMoonModal;
+    sidebarMoon.style.cursor = 'pointer';
+  }
+  // Add moon widget to today view header
+  const header = document.querySelector('#view-today .view-header');
+  if (header && !document.getElementById('moon-landing-widget')) {
+    const widget = document.createElement('div');
+    widget.id = 'moon-landing-widget';
+    widget.className = 'moon-landing-widget';
+    widget.onclick = openMoonModal;
+    widget.innerHTML = `
+      <div class="moon-landing-icon">${moon.icon}</div>
+      <div class="moon-landing-info">
+        <div class="moon-landing-name">${moon.name}</div>
+        <div class="moon-landing-tagline">${moon.tagline || moon.insight || ''}</div>
+      </div>
+    `;
+    header.appendChild(widget);
+  }
+  // Also update cycle view moon
+  const moonBig = document.getElementById('moon-big');
+  if (moonBig) {
+    moonBig.textContent = moon.icon;
+    moonBig.style.cursor = 'pointer';
+    moonBig.onclick = openMoonModal;
+    moonBig.title = 'Click for moon phase details';
+  }
+  const moonName = document.getElementById('moon-name');
+  if (moonName) {
+    moonName.textContent = moon.name;
+    moonName.style.cursor = 'pointer';
+    moonName.onclick = openMoonModal;
+  }
+}
 
 </script>
 </body>
