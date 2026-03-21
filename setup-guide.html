@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luna — Setup Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F8F5FF;color:#1E1640;line-height:1.7;padding:40px 20px;font-size:14px}
+.container{max-width:720px;margin:0 auto}
+.logo{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;font-style:italic;color:#8B7EC4;margin-bottom:6px}
+.tagline{color:#7A6B9E;font-size:13px;margin-bottom:40px}
+h2{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:#1E1640;margin-bottom:6px}
+h3{font-size:14px;font-weight:500;color:#1E1640;margin:20px 0 8px}
+.section{background:#fff;border-radius:16px;padding:28px 32px;margin-bottom:20px;border:1px solid #DDD5F5}
+.section-label{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#A899CC;margin-bottom:8px}
+ol{padding-left:18px;color:#6B5B9E}
+ol li{margin-bottom:8px;color:#1E1640}
+ol li strong{color:#8B7EC4}
+code{background:#EDE8FF;color:#8B7EC4;padding:2px 7px;border-radius:5px;font-family:monospace;font-size:12px}
+.note{background:#FFF8F0;border:1px solid #F0D5A0;border-radius:10px;padding:12px 16px;font-size:12px;color:#8B5A10;margin-top:12px}
+a{color:#8B7EC4}
+.back-btn{display:inline-block;margin-top:28px;padding:10px 22px;background:#8B7EC4;color:white;border-radius:10px;text-decoration:none;font-size:13px;font-weight:500}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">luna</div>
+  <div class="tagline">Setup guide · ~10 minutes total</div>
+
+  <div class="section">
+    <div class="section-label">Step 1 of 3</div>
+    <h2>Host Luna on GitHub Pages</h2>
+    <h3>Create a GitHub repository</h3>
+    <ol>
+      <li>Go to <a href="https://github.com" target="_blank">github.com</a> and sign in (or create a free account)</li>
+      <li>Click the <strong>+</strong> icon → <strong>New repository</strong></li>
+      <li>Name it <code>luna</code> — keep it public (required for free GitHub Pages)</li>
+      <li>Click <strong>Create repository</strong></li>
+    </ol>
+    <h3>Upload your files</h3>
+    <ol>
+      <li>In your new repo, click <strong>Add file → Upload files</strong></li>
+      <li>Upload the entire <code>luna</code> folder contents (drag all files and folders)</li>
+      <li>Make sure <code>index.html</code> is in the root of the repo</li>
+      <li>Click <strong>Commit changes</strong></li>
+    </ol>
+    <h3>Enable GitHub Pages</h3>
+    <ol>
+      <li>Go to <strong>Settings → Pages</strong> in your repository</li>
+      <li>Under Source, select <strong>Deploy from a branch</strong></li>
+      <li>Choose <strong>main</strong> branch, folder <strong>/ (root)</strong></li>
+      <li>Click <strong>Save</strong></li>
+      <li>Your Luna will be live at <code>https://yourusername.github.io/luna</code> in ~2 minutes</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Step 2 of 3 · Optional but recommended</div>
+    <h2>Google Calendar API Key</h2>
+    <ol>
+      <li>Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a></li>
+      <li>Create a new project — name it <strong>Luna</strong></li>
+      <li>Go to <strong>APIs & Services → Library</strong></li>
+      <li>Search for <strong>Google Calendar API</strong> and click <strong>Enable</strong></li>
+      <li>Go to <strong>APIs & Services → Credentials</strong></li>
+      <li>Click <strong>Create Credentials → OAuth Client ID</strong></li>
+      <li>Application type: <strong>Web application</strong></li>
+      <li>Under Authorised JavaScript origins, add your GitHub Pages URL:<br><code>https://yourusername.github.io</code></li>
+      <li>Under Authorised redirect URIs, add:<br><code>https://yourusername.github.io/luna/</code></li>
+      <li>Click <strong>Create</strong> — copy your <strong>Client ID</strong></li>
+      <li>Paste it into Luna's Settings → API Keys → Google OAuth Client ID</li>
+    </ol>
+    <div class="note">
+      ⚠️ You'll also need to add yourself as a test user: APIs & Services → OAuth consent screen → Test users → Add your Gmail address
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Step 3 of 3 · Optional</div>
+    <h2>YouTube API Key (for song search)</h2>
+    <ol>
+      <li>In the same Google Cloud project, go to <strong>APIs & Services → Library</strong></li>
+      <li>Search for <strong>YouTube Data API v3</strong> and click <strong>Enable</strong></li>
+      <li>Go to <strong>Credentials → Create Credentials → API Key</strong></li>
+      <li>Copy the API key</li>
+      <li>Click <strong>Restrict Key</strong> → under API restrictions, select <strong>YouTube Data API v3</strong></li>
+      <li>Also restrict by HTTP referrer: add <code>https://yourusername.github.io/*</code></li>
+      <li>Paste the key into Luna's Settings → API Keys → YouTube API Key</li>
+    </ol>
+    <div class="note">
+      Free tier gives you 100 song searches per day — more than enough for personal use. The search is debounced so you don't burn quota while typing.
+    </div>
+  </div>
+
+  <a href="index.html" class="back-btn">← Back to Luna</a>
+</div>
+</body>
+</html>
