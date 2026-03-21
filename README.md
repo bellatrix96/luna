@@ -20,17 +20,3 @@ Built for a full-time employee preparing for GMAT who wants to work *with* her b
 - **Log history** — every day's entry, searchable
 - **Pattern insights** — energy charts and mood clouds from your data
 
-## Setup
-
-See [setup-guide.html](setup-guide.html) for step-by-step instructions to:
-1. Host on GitHub Pages (free, ~5 min)
-2. Connect Google Calendar (optional)
-3. Add YouTube API key for song search (optional)
-
-## Data privacy
-
-All data is stored locally in your browser (`localStorage`). Nothing is sent to any server except Google Calendar and YouTube API calls (which go directly to Google's servers). Your journal notes and cycle data never leave your device.
-
-## Tech
-
-Pure HTML/CSS/JavaScript. No frameworks, no build tools, no dependencies. Just open `index.html`.
